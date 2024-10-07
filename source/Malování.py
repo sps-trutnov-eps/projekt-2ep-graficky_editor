@@ -18,7 +18,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+    mouse_pressed = pygame.mouse.get_pressed()
     pressed_keys = pygame.key.get_pressed()
+    if mouse_pressed[0]:
+        brush1.center = pygame.mouse.get_pos()
     if pressed_keys[pygame.K_SPACE]:
         brush1.center = pygame.mouse.get_pos()
             
@@ -26,7 +29,7 @@ while True:
     
     
     
-    pygame.draw.rect(window, (0, 0, 255), brush1)
+    pygame.draw.ellipse(window, (0, 0, 255), brush1)
     pygame.draw.rect(window, (200, 200, 200), gui)
     pygame.display.flip()
 
