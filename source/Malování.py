@@ -27,17 +27,30 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
-    if stisknute[pygame.K_UP]:
-        brush_size += 1
-    if stisknute[pygame.K_DOWN]:
-        brush_size -= 1
+    
         
     brush_preview.center = mouse_pos
     if mouse_pressed[0]: #0 je levý tlačítko na myši
         brush_rect = pygame.Rect(0, 0, brush_size, brush_size)
         brush_rect.center = mouse_pos
         pygame.draw.ellipse(canvas, brush_color1, brush_rect)
+        
+    if stisknute[pygame.K_UP]:
+        if brush_size <= 300: 
+            brush_size += 1
+            brush_preview.width += 1
+            brush_preview.height += 1
+        else:
+            NOEVENT
     
+    if stisknute[pygame.K_DOWN]:
+        if brush_size >= 10: 
+            brush_size -= 1
+            brush_preview.width -= 1
+            brush_preview.height -= 1
+        else:
+            NOEVENT
+        
     
     
     window.blit(canvas, (0, 0))
