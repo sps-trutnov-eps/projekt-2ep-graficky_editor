@@ -9,9 +9,10 @@ window = pygame.display.set_mode(window_size)
 gui = pygame.Rect(0, 0, 300, 900)
 size_slider = pygame.Rect(25, 50, 250, 30)
 
-brush1 = pygame.Rect(50, 50, 50, 50)
+
 brush_size = 50
-brush_preview = brush1
+brush1 = pygame.Rect(50, 50, brush_size, brush_size)
+brush_preview = pygame.Rect(50, 50, brush_size, brush_size)
 canvas = pygame.Surface(window_size)
 canvas.fill((255, 255, 255))
 
@@ -26,16 +27,18 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+    if stisknute[pygame.K_UP]:
+        brush_size += 1
+    if stisknute[pygame.K_DOWN]:
+        brush_size -= 1
+        
     brush_preview.center = mouse_pos
     if mouse_pressed[0]: #0 je levý tlačítko na myši
         brush_rect = pygame.Rect(0, 0, brush_size, brush_size)
         brush_rect.center = mouse_pos
-        pygame.draw.ellipse(canvas, brush_color1, brush1)
+        pygame.draw.ellipse(canvas, brush_color1, brush_rect)
     
-    if stisknute[pygame.K_PLUS]:
-        brush_size += 1
-    if stisknute[pygame.K_MINUS]:
-        brush_size -= 1
+    
     
     window.blit(canvas, (0, 0))
     pygame.draw.ellipse(window, (0, 0, 255), brush1)
