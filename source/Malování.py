@@ -7,7 +7,11 @@ pygame.init
 window_size = 1500, 900
 window = pygame.display.set_mode(window_size)
 gui = pygame.Rect(0, 0, 300, 900)
-size_slider = pygame.Rect(25, 50, 250, 30)
+size_slider = pygame.Rect(25, 50, 250, 25)
+black_button = pygame.Rect(25, 150, 110, 110)
+blue_button = pygame.Rect(25, 285, 110, 110)
+red_button = pygame.Rect(165, 285, 110, 110)
+green_button = pygame.Rect(25, 420, 110, 110)
 
 
 brush_size = 50
@@ -63,5 +67,9 @@ while True:
     pygame.draw.ellipse(window, (0, 0, 0), brush_preview, width=2)
     pygame.draw.rect(window, (200, 200, 200), gui)
     pygame.draw.rect(window, (175, 175, 175), size_slider)
+    pygame.draw.rect(window, (0, 0, 255), blue_button)
+    pygame.draw.rect(window, (255, 0, 0), red_button)
+    pygame.draw.rect(window, (0, 255, 0), green_button)
+    pygame.draw.rect(window, (0, 0, 0), black_button)
     pygame.display.flip()
 
