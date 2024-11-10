@@ -16,7 +16,7 @@ brush_preview = pygame.Rect(50, 50, brush_size, brush_size)
 canvas = pygame.Surface(window_size)
 canvas.fill((255, 255, 255))
 
-brush_color1 = (0, 0, 255)
+brush_color = (0, 0, 255)
 while True:
     
     mouse_pressed = pygame.mouse.get_pressed()
@@ -33,7 +33,7 @@ while True:
     if mouse_pressed[0]: #0 je levý tlačítko na myši
         brush_rect = pygame.Rect(0, 0, brush_size, brush_size)
         brush_rect.center = mouse_pos
-        pygame.draw.ellipse(canvas, brush_color1, brush_rect)
+        pygame.draw.ellipse(canvas, brush_color, brush_rect)
         
     if stisknute[pygame.K_UP]:
         if brush_size <= 300: 
@@ -51,7 +51,12 @@ while True:
         else:
             NOEVENT
         
-    
+    if stisknute[pygame.K_b]:
+        brush_color = (0, 0, 255)
+    if stisknute[pygame.K_r]:
+        brush_color = (255, 0, 0)
+    if stisknute[pygame.K_g]:
+        brush_color = (0, 255, 0)
     
     window.blit(canvas, (0, 0))
     pygame.draw.ellipse(window, (0, 0, 255), brush1)
