@@ -4,14 +4,15 @@ import os
 from pygame.locals import *
 
 pygame.init()
-window_size = 1500, 900
+window_size = 1920, 1025
 window = pygame.display.set_mode(window_size)
-gui = pygame.Rect(0, 0, 300, 900)
+gui = pygame.Rect(0, 0, 300, window_size[1])
 size_slider = pygame.Rect(25, 50, 250, 25)
 black_button = pygame.Rect(25, 150, 110, 110)
 blue_button = pygame.Rect(25, 285, 110, 110)
 red_button = pygame.Rect(165, 285, 110, 110)
 green_button = pygame.Rect(25, 420, 110, 110)
+button_selector = pygame.Rect(20, 280, 120, 120)
 
 brush_size = 50
 brush1 = pygame.Rect(50, 50, brush_size, brush_size)
@@ -35,12 +36,16 @@ while True:
     if mouse_pressed[0]:  # Left mouse button clicked
         if black_button.collidepoint(mouse_pos):
             brush_color = (0, 0, 0)  # Set brush to black
+            button_selector.center = black_button.center
         elif blue_button.collidepoint(mouse_pos):
             brush_color = (0, 0, 255)  # Set brush to blue
+            button_selector.center = blue_button.center
         elif red_button.collidepoint(mouse_pos):
             brush_color = (255, 0, 0)  # Set brush to red
+            button_selector.center = red_button.center
         elif green_button.collidepoint(mouse_pos):
             brush_color = (0, 255, 0)  # Set brush to green
+            button_selector.center = green_button.center
     
     # Update brush preview position
     brush_preview.center = mouse_pos
@@ -71,10 +76,11 @@ while True:
     # Draw GUI elements (buttons, sliders)
     pygame.draw.rect(window, (200, 200, 200), gui)
     pygame.draw.rect(window, (175, 175, 175), size_slider)
+    pygame.draw.rect(window, (100, 100, 100), button_selector)
     
     pygame.draw.rect(window, (0, 0, 255), blue_button)  # Blue button
     pygame.draw.rect(window, (255, 0, 0), red_button)  # Red button
     pygame.draw.rect(window, (0, 255, 0), green_button)  # Green button
-    pygame.draw.rect(window, (0, 0, 0), black_button)  # Black button
+    pygame.draw.rect(window, (0, 0, 0), black_button)# Black button
     
     pygame.display.flip()
