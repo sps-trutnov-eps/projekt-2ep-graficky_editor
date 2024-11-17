@@ -9,10 +9,11 @@ gui = pygame.Rect(0, 0, 300, window_size[1])
 slider = pygame.Rect(25, 50, 250, 25)  # Posuvník
 slider_handle = pygame.Rect(25, 50, 25, 25)  # Posuvné tlačítko
 
-black_button = pygame.Rect(25, 150, 110, 110)
-blue_button = pygame.Rect(25, 285, 110, 110)
-red_button = pygame.Rect(165, 285, 110, 110)
-green_button = pygame.Rect(25, 420, 110, 110)
+blue_button = pygame.Rect(25, 150, 110, 110)
+red_button = pygame.Rect(165, 150, 110, 110)
+green_button = pygame.Rect(25, 285, 110, 110)
+black_button = pygame.Rect(165, 285, 110, 110)  # Černá barva přesunuta
+eraser_button = pygame.Rect(25, 420, 250, 110)  # Guma na novém místě
 button_selector = pygame.Rect(20, 280, 120, 120)
 
 brush_size = 50
@@ -31,7 +32,7 @@ while True:
             pygame.quit()
             sys.exit()
     
-    # Handle mouse click events for slider
+    # Handle mouse click events for slider and buttons
     if mouse_pressed[0]:  # Left mouse button clicked
         if slider.collidepoint(mouse_pos):
             # Calculate brush size based on mouse position relative to slider
@@ -53,6 +54,9 @@ while True:
         elif green_button.collidepoint(mouse_pos):
             brush_color = (0, 255, 0)
             button_selector.center = green_button.center
+        elif eraser_button.collidepoint(mouse_pos):  # Pokud kliknu na gumu
+            brush_color = (255, 255, 255)  # Nastav barvu na bílou
+            button_selector.center = eraser_button.center
     
     # Drawing with the brush
     if mouse_pressed[0]:  # Left mouse button pressed
@@ -71,8 +75,15 @@ while True:
     pygame.draw.rect(window, (0, 0, 255), blue_button)
     pygame.draw.rect(window, (255, 0, 0), red_button)
     pygame.draw.rect(window, (0, 255, 0), green_button)
-    pygame.draw.rect(window, (0, 0, 0), black_button)
+    pygame.draw.rect(window, (0, 0, 0), black_button)  # Černá barva vedle ostatních
+    pygame.draw.rect(window, (255, 255, 255), eraser_button)  # Ikonka gumy
     pygame.draw.rect(window, (100, 100, 100), button_selector, 2)
+    
+    # Add eraser icon (text or graphic)
+    font = pygame.font.SysFont(None, 40)
+    eraser_text = font.render("Eraser", True, (0, 0, 0))
+    eraser_text_rect = eraser_text.get_rect(center=eraser_button.center)
+    window.blit(eraser_text, eraser_text_rect)
     
     # Dynamic brush preview
     brush_preview = pygame.Rect(0, 0, brush_size, brush_size)  # Dynamically adjust size
