@@ -1,6 +1,9 @@
 import sys
 import pygame
 from pygame.locals import *
+import os
+from datetime import datetime
+from pathlib import Path
 
 pygame.init()
 window_size = 1920, 1025
@@ -58,12 +61,19 @@ def redo():
         canvas.blit(canvas_history[history_position], (0, 0))
 
 def save_canvas():
-    # Automatické generování názvu souboru s časovou značkou
-    from datetime import datetime
+    # Získání cesty ke složce Stažené soubory
+    downloads_path = str(Path.home() / "Downloads")
+    
+    # Vytvoření názvu souboru s časovou značkou
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"kresba_{timestamp}.png"
-    pygame.image.save(canvas, filename)
-    return filename
+    
+    # Kompletní cesta k souboru
+    full_path = os.path.join(downloads_path, filename)
+    
+    # Uložení obrázku
+    pygame.image.save(canvas, full_path)
+    return full_path
 
 # Font pro text
 font = pygame.font.SysFont(None, 40)
