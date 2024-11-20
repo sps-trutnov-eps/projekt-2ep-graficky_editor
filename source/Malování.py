@@ -10,6 +10,7 @@ window_size = 1920, 1025
 window = pygame.display.set_mode(window_size)
 pygame.display.set_caption("Kreslící aplikace")
 
+<<<<<<< Updated upstream
 # GUI konstanty
 GUI_WIDTH = 300
 gui = pygame.Rect(0, 0, GUI_WIDTH, window_size[1])
@@ -85,6 +86,16 @@ while True:
     mouse_pressed = pygame.mouse.get_pressed()
     mouse_pos = pygame.mouse.get_pos()
     keys = pygame.key.get_pressed()
+=======
+brush_size = 50  # Proměnná pro uchování velikosti štětce
+brush_color = (0, 0, 255)  # Barva štětce
+transparent_brush_color = (0, 0, 255, 128)  # Průhledná barva pro náhled
+clock = pygame.time.Clock()
+while True:
+    mouse_pressed = pygame.mouse.get_pressed()
+    mouse_pos = pygame.mouse.get_pos()
+    clock.tick(120)
+>>>>>>> Stashed changes
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
