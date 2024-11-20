@@ -17,9 +17,10 @@ slider = pygame.Rect(25, 50, 250, 25)
 slider_handle = pygame.Rect(25, 50, 25, 25)
 
 # Tlačítka pro barvy a nástroje
-light_blue_button = pygame.Rect(175, 225, 55, 55)
-blue_button = pygame.Rect(100, 225, 55, 55)
-dark_blue_button = pygame.Rect(25, 225, 55, 55)
+light_blue_button = pygame.Rect(235, 225, 55, 55)
+blue_button = pygame.Rect(165, 225, 55, 55)
+dark_blue_button = pygame.Rect(95, 225, 55, 55)
+darkdark_blue_button = pygame.Rect(25, 225, 55, 55)
 red_button = pygame.Rect(25, 375, 55, 55)
 green_button = pygame.Rect(25, 300, 55, 55)
 black_button = pygame.Rect(25, 150, 55, 55)
@@ -121,9 +122,20 @@ while True:
         elif black_button.collidepoint(mouse_pos):
             brush_color = (0, 0, 0)
             button_selector.center = black_button.center
+            
+        elif light_blue_button.collidepoint(mouse_pos):
+            brush_color = (100, 100, 255)
+            button_selector.center = light_blue_button.center
         elif blue_button.collidepoint(mouse_pos):
             brush_color = (0, 0, 255)
             button_selector.center = blue_button.center
+        elif dark_blue_button.collidepoint(mouse_pos):
+            brush_color = (0, 0, 155)
+            button_selector.center = dark_blue_button.center
+        elif darkdark_blue_button.collidepoint(mouse_pos):
+            brush_color = (0, 0, 55)
+            button_selector.center = darkdark_blue_button.center
+            
         elif red_button.collidepoint(mouse_pos):
             brush_color = (255, 0, 0)
             button_selector.center = red_button.center
@@ -174,6 +186,7 @@ while True:
     pygame.draw.rect(window, (100, 100, 255), light_blue_button)
     pygame.draw.rect(window, (0, 0, 255), blue_button)
     pygame.draw.rect(window, (0, 0, 155), dark_blue_button)
+    pygame.draw.rect(window, (0, 0, 55), darkdark_blue_button)
     pygame.draw.rect(window, (255, 0, 0), red_button)
     pygame.draw.rect(window, (0, 255, 0), green_button)
     pygame.draw.rect(window, (0, 0, 0), black_button)
