@@ -17,20 +17,22 @@ slider = pygame.Rect(25, 50, 250, 25)
 slider_handle = pygame.Rect(25, 50, 25, 25)
 
 # Tlačítka pro barvy a nástroje
-blue_button = pygame.Rect(25, 150, 110, 110)
-red_button = pygame.Rect(165, 150, 110, 110)
-green_button = pygame.Rect(25, 285, 110, 110)
-black_button = pygame.Rect(165, 285, 110, 110)
-eraser_button = pygame.Rect(25, 420, 250, 110)
+light_blue_button = pygame.Rect(175, 225, 55, 55)
+blue_button = pygame.Rect(100, 225, 55, 55)
+dark_blue_button = pygame.Rect(25, 225, 55, 55)
+red_button = pygame.Rect(25, 375, 55, 55)
+green_button = pygame.Rect(25, 300, 55, 55)
+black_button = pygame.Rect(25, 150, 55, 55)
+eraser_button = pygame.Rect(100, 150, 55, 55)
 clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání plátna
 save_button = pygame.Rect(25, 630, 250, 50)   # Nové tlačítko pro uložení
-button_selector = pygame.Rect(20, 145, 120, 120)
+button_selector = pygame.Rect(20, 145, 65, 65)
 
 # Inicializace plátna
 brush_size = 50
 canvas = pygame.Surface(window_size)
 canvas.fill((255, 255, 255))
-brush_color = (0, 0, 255)
+brush_color = (0, 0, 0)
 
 # Historie pro Undo/Redo
 canvas_history = [pygame.Surface.copy(canvas)]
@@ -76,7 +78,7 @@ def save_canvas():
     return full_path
 
 # Font pro text
-font = pygame.font.SysFont(None, 40)
+font = pygame.font.SysFont(None, 25)
 
 last_pos = None
 drawing = False
@@ -169,7 +171,9 @@ while True:
     pygame.draw.rect(window, (50, 50, 50), slider_handle)
     
     # Vykreslení tlačítek
+    pygame.draw.rect(window, (100, 100, 255), light_blue_button)
     pygame.draw.rect(window, (0, 0, 255), blue_button)
+    pygame.draw.rect(window, (0, 0, 155), dark_blue_button)
     pygame.draw.rect(window, (255, 0, 0), red_button)
     pygame.draw.rect(window, (0, 255, 0), green_button)
     pygame.draw.rect(window, (0, 0, 0), black_button)
