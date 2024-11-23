@@ -26,7 +26,12 @@ light_red_button = pygame.Rect(235, 375, 55, 55)
 red_button = pygame.Rect(165, 375, 55, 55)
 dark_red_button = pygame.Rect(95, 375, 55, 55)
 darkdark_red_button = pygame.Rect(25, 375, 55, 55)
-green_button = pygame.Rect(25, 300, 55, 55)
+
+light_green_button = pygame.Rect(235, 300, 55, 55)
+green_button = pygame.Rect(165, 300, 55, 55)
+dark_green_button = pygame.Rect(95, 300, 55, 55)
+darkdark_green_button = pygame.Rect(25, 300, 55, 55)
+
 black_button = pygame.Rect(25, 150, 55, 55)
 eraser_button = pygame.Rect(100, 150, 55, 55)
 clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání plátna
@@ -140,12 +145,32 @@ while True:
             brush_color = (0, 0, 55)
             button_selector.center = darkdark_blue_button.center
             
+        elif light_red_button.collidepoint(mouse_pos):
+            brush_color = (255, 100, 100)
+            button_selector.center = light_red_button.center
         elif red_button.collidepoint(mouse_pos):
             brush_color = (255, 0, 0)
             button_selector.center = red_button.center
+        elif dark_red_button.collidepoint(mouse_pos):
+            brush_color = (155, 0, 0)
+            button_selector.center = dark_red_button.center
+        elif darkdark_red_button.collidepoint(mouse_pos):
+            brush_color = (55, 0, 0)
+            button_selector.center = darkdark_red_button.center
+        
+        elif light_green_button.collidepoint(mouse_pos):
+            brush_color = (100, 255, 100)
+            button_selector.center = light_green_button.center
         elif green_button.collidepoint(mouse_pos):
             brush_color = (0, 255, 0)
             button_selector.center = green_button.center
+        elif dark_green_button.collidepoint(mouse_pos):
+            brush_color = (0, 155, 0)
+            button_selector.center = dark_green_button.center
+        elif darkdark_green_button.collidepoint(mouse_pos):
+            brush_color = (0, 55, 0)
+            button_selector.center = darkdark_green_button.center
+            
         elif eraser_button.collidepoint(mouse_pos):
             brush_color = (255, 255, 255)
             button_selector.center = eraser_button.center
@@ -197,7 +222,11 @@ while True:
     pygame.draw.rect(window, (155, 0, 0), dark_red_button)
     pygame.draw.rect(window, (55, 0, 0), darkdark_red_button)
     
+    pygame.draw.rect(window, (100, 255, 100), light_green_button)
     pygame.draw.rect(window, (0, 255, 0), green_button)
+    pygame.draw.rect(window, (0, 155, 0), dark_green_button)
+    pygame.draw.rect(window, (0, 55, 0), darkdark_green_button)
+    
     pygame.draw.rect(window, (0, 0, 0), black_button)
     pygame.draw.rect(window, (255, 255, 255), eraser_button)
     pygame.draw.rect(window, (200, 200, 200), clear_button)
