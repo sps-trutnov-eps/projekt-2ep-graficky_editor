@@ -33,10 +33,30 @@ dark_green_button = pygame.Rect(95, 300, 55, 55)
 darkdark_green_button = pygame.Rect(25, 300, 55, 55)
 
 black_button = pygame.Rect(25, 150, 55, 55)
-eraser_button = pygame.Rect(100, 150, 55, 55)
+eraser_button = pygame.Rect(95, 150, 55, 55)
 clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání plátna
 save_button = pygame.Rect(25, 630, 250, 50)   # Nové tlačítko pro uložení
 button_selector = pygame.Rect(20, 145, 65, 65)
+
+# RGB posuvníky
+rgb_slider_width = 250
+rgb_slider_height = 25
+red_slider = pygame.Rect(25, 750, rgb_slider_width, rgb_slider_height)
+green_slider = pygame.Rect(25, 800, rgb_slider_width, rgb_slider_height)
+blue_slider = pygame.Rect(25, 850, rgb_slider_width, rgb_slider_height)
+
+red_handle = pygame.Rect(25, 750, 25, rgb_slider_height)
+green_handle = pygame.Rect(25, 800, 25, rgb_slider_height)
+blue_handle = pygame.Rect(25, 850, 25, rgb_slider_height)
+
+# Náhled vlastní barvy
+custom_color_preview = pygame.Rect(25, 900, rgb_slider_width, 50)
+custom_color_button = pygame.Rect(165, 150, 55, 55)
+
+# RGB hodnoty
+red_value = 0
+green_value = 0
+blue_value = 0
 
 # Inicializace plátna
 brush_size = 50
@@ -181,6 +201,26 @@ while True:
         elif save_button.collidepoint(mouse_pos):
             filename = save_canvas()
             print(f"Uloženo jako: {filename}")
+        # RGB posuvníky
+        elif red_slider.collidepoint(mouse_pos):
+            rel_x = max(0, min(mouse_pos[0] - red_slider.x, red_slider.width))
+            red_value = int((rel_x / red_slider.width) * 255)
+            red_handle.centerx = red_slider.x + rel_x
+            
+        elif green_slider.collidepoint(mouse_pos):
+            rel_x = max(0, min(mouse_pos[0] - green_slider.x, green_slider.width))
+            green_value = int((rel_x / green_slider.width) * 255)
+            green_handle.centerx = green_slider.x + rel_x
+            
+        elif blue_slider.collidepoint(mouse_pos):
+            rel_x = max(0, min(mouse_pos[0] - blue_slider.x, blue_slider.width))
+            blue_value = int((rel_x / blue_slider.width) * 255)
+            blue_handle.centerx = blue_slider.x + rel_x
+            
+        # Použití vlastní barvy
+        elif custom_color_button.collidepoint(mouse_pos):
+            brush_color = (red_value, green_value, blue_value)
+            button_selector.center = custom_color_button.center
 
     # Vylepšené kreslení s plynulými tahy
     if drawing and not gui.collidepoint(mouse_pos):
@@ -233,14 +273,29 @@ while True:
     pygame.draw.rect(window, (200, 200, 200), save_button)
     pygame.draw.rect(window, (100, 100, 100), button_selector, 2)
     
+    # Vykreslení RGB posuvníků
+    pygame.draw.rect(window, (255, 200, 200), red_slider)
+    pygame.draw.rect(window, (200, 255, 200), green_slider)
+    pygame.draw.rect(window, (200, 200, 255), blue_slider)
+
+    pygame.draw.rect(window, (100, 100, 100), red_handle)
+    pygame.draw.rect(window, (100, 100, 100), green_handle)
+    pygame.draw.rect(window, (100, 100, 100), blue_handle)
+
+    # Náhled vlastní barvy
+    pygame.draw.rect(window, (red_value, green_value, blue_value), custom_color_preview)
+    pygame.draw.rect(window, (red_value, green_value, blue_value), custom_color_button)
+    
     # Texty na tlačítkách
     eraser_text = font.render("Guma", True, (0, 0, 0))
     clear_text = font.render("Vymazat vše", True, (0, 0, 0))
     save_text = font.render("Uložit", True, (0, 0, 0))
+    custom_color_text = font.render("Vlastní", True, (0, 0, 0))
     
     window.blit(eraser_text, eraser_text.get_rect(center=eraser_button.center))
     window.blit(clear_text, clear_text.get_rect(center=clear_button.center))
     window.blit(save_text, save_text.get_rect(center=save_button.center))
+    window.blit(custom_color_text, custom_color_text.get_rect(center=custom_color_button.center))
     
     # Náhled štětce
     if not gui.collidepoint(mouse_pos):
