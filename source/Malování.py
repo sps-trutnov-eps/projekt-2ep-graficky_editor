@@ -38,6 +38,8 @@ clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání 
 save_button = pygame.Rect(25, 630, 250, 50)   # Nové tlačítko pro uložení
 button_selector = pygame.Rect(20, 145, 65, 65)
 
+
+
 # Inicializace plátna
 brush_size = 50
 canvas = pygame.Surface(window_size)
@@ -181,6 +183,7 @@ while True:
         elif save_button.collidepoint(mouse_pos):
             filename = save_canvas()
             print(f"Uloženo jako: {filename}")
+            
 
     # Vylepšené kreslení s plynulými tahy
     if drawing and not gui.collidepoint(mouse_pos):
@@ -232,6 +235,7 @@ while True:
     pygame.draw.rect(window, (200, 200, 200), clear_button)
     pygame.draw.rect(window, (200, 200, 200), save_button)
     pygame.draw.rect(window, (100, 100, 100), button_selector, 2)
+
     
     # Texty na tlačítkách
     eraser_text = font.render("Guma", True, (0, 0, 0))
