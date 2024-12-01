@@ -38,9 +38,7 @@ clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání 
 save_button = pygame.Rect(25, 630, 250, 50)   # Nové tlačítko pro uložení
 button_selector = pygame.Rect(20, 145, 65, 65)
 
-<<<<<<< HEAD
 
-=======
 # RGB posuvníky
 rgb_slider_width = 250
 rgb_slider_height = 25
@@ -60,7 +58,7 @@ custom_color_button = pygame.Rect(165, 150, 55, 55)
 red_value = 0
 green_value = 0
 blue_value = 0
->>>>>>> origin/main
+
 
 # Inicializace plátna
 brush_size = 50
@@ -205,9 +203,7 @@ while True:
         elif save_button.collidepoint(mouse_pos):
             filename = save_canvas()
             print(f"Uloženo jako: {filename}")
-<<<<<<< HEAD
-            
-=======
+
         # RGB posuvníky
         elif red_slider.collidepoint(mouse_pos):
             rel_x = max(0, min(mouse_pos[0] - red_slider.x, red_slider.width))
@@ -228,7 +224,6 @@ while True:
         elif custom_color_button.collidepoint(mouse_pos):
             brush_color = (red_value, green_value, blue_value)
             button_selector.center = custom_color_button.center
->>>>>>> origin/main
 
     # Vylepšené kreslení s plynulými tahy
     if drawing and not gui.collidepoint(mouse_pos):
