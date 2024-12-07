@@ -38,6 +38,12 @@ clear_button = pygame.Rect(25, 555, 250, 50)  # Nové tlačítko pro vymazání 
 save_button = pygame.Rect(25, 630, 250, 50)   # Nové tlačítko pro uložení
 button_selector = pygame.Rect(20, 145, 65, 65)
 
+# Tlačítka nástrojů
+brush_tool_button = pygame.Rect(25, 450, 55, 55)
+line_tool_button = pygame.Rect(95, 450, 55, 55)
+rectangle_tool_button = pygame.Rect(165, 450, 55, 55)
+triangle_tool_button = pygame.Rect(235, 450, 55, 55)
+circle_tool_button = pygame.Rect(25, 510, 55, 55)
 
 # RGB posuvníky
 rgb_slider_width = 250
@@ -59,12 +65,24 @@ red_value = 0
 green_value = 0
 blue_value = 0
 
+# Nástroje
+TOOL_BRUSH = 0
+TOOL_LINE = 1
+TOOL_RECTANGLE = 2
+TOOL_TRIANGLE = 3
+TOOL_CIRCLE = 4
+current_tool = TOOL_BRUSH
 
 # Inicializace plátna
 brush_size = 50
 canvas = pygame.Surface(window_size)
 canvas.fill((255, 255, 255))
 brush_color = (0, 0, 0)
+
+# Inicializace proměnných pro geometrické tvary
+shape_start_pos = None
+drawing_shape = False
+preview_surface = None
 
 # Historie pro Undo/Redo
 canvas_history = [pygame.Surface.copy(canvas)]
@@ -141,6 +159,48 @@ while True:
                 undo()
             elif event.key == pygame.K_y and (keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]):
                 redo()
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1 and not gui.collidepoint(mouse_pos):
+                if current_tool == TOOL_BRUSH:
+                    drawing = True
+                    last_pos = mouse_pos
+                elif current_tool in [TOOL_LINE, TOOL_RECTANGLE, TOOL_TRIANGLE, TOOL_CIRCLE]:
+                    shape_start_pos = mouse_pos
+                    drawing_shape = True
+                    preview_surface = pygame.Surface(window_size, pygame.SRCALPHA)
+
+        elif event.type == pygame.MOUSEBUTTONUP:
+            if event.button == 1:
+                if current_tool == TOOL_BRUSH and drawing:
+                    drawing = False
+                    save_state()
+        
+        elif current_tool in [TOOL_LINE, TOOL_RECTANGLE, TOOL_TRIANGLE, TOOL_CIRCLE] and drawing_shape:
+            drawing_shape = False
+            
+            # Finalizace tvaru na plátně
+            if current_tool == TOOL_LINE:
+                pygame.draw.line(canvas, brush_color, shape_start_pos, mouse_pos, brush_size // 5)
+            elif current_tool == TOOL_RECTANGLE:
+                rect = pygame.Rect(shape_start_pos[0], shape_start_pos[1], 
+                                   mouse_pos[0] - shape_start_pos[0], 
+                                   mouse_pos[1] - shape_start_pos[1])
+                rect.normalize()
+                pygame.draw.rect(canvas, brush_color, rect, brush_size // 5)
+            elif current_tool == TOOL_CIRCLE:
+                # Výpočet poloměru kruhu
+                radius = int(((mouse_pos[0] - shape_start_pos[0])**2 + 
+                              (mouse_pos[1] - shape_start_pos[1])**2)**0.5)
+                pygame.draw.circle(canvas, brush_color, shape_start_pos, radius, brush_size // 5)
+            elif current_tool == TOOL_TRIANGLE:
+                # Třetí bod trojúhelníku uprostřed mezi počátečním a koncovým bodem
+                mid_point = ((shape_start_pos[0] + mouse_pos[0]) // 2, mouse_pos[1])
+                pygame.draw.polygon(canvas, brush_color, 
+                                    [shape_start_pos, mouse_pos, mid_point], 
+                                    brush_size // 5)
+            
+            save_state()
+            preview_surface = None
     
     # Zpracování kliknutí na GUI prvky
     if mouse_pressed[0]:
@@ -224,6 +284,17 @@ while True:
         elif custom_color_button.collidepoint(mouse_pos):
             brush_color = (red_value, green_value, blue_value)
             button_selector.center = custom_color_button.center
+        
+        elif  brush_tool_button.collidepoint(mouse_pos):
+            current_tool = TOOL_BRUSH
+        elif line_tool_button.collidepoint(mouse_pos):
+            current_tool = TOOL_LINE
+        elif rectangle_tool_button.collidepoint(mouse_pos):
+            current_tool = TOOL_RECTANGLE
+        elif triangle_tool_button.collidepoint(mouse_pos):
+            current_tool = TOOL_TRIANGLE
+        elif circle_tool_button.collidepoint(mouse_pos):
+            current_tool = TOOL_CIRCLE
 
     # Vylepšené kreslení s plynulými tahy
     if drawing and not gui.collidepoint(mouse_pos):
@@ -290,11 +361,26 @@ while True:
     pygame.draw.rect(window, (red_value, green_value, blue_value), custom_color_preview)
     pygame.draw.rect(window, (red_value, green_value, blue_value), custom_color_button)
     
+    # Vykreslení tlačítek nástrojů
+    pygame.draw.rect(window, (200 if current_tool == TOOL_BRUSH else 150), brush_tool_button)
+    pygame.draw.rect(window, (200 if current_tool == TOOL_LINE else 150), line_tool_button)
+        
     # Texty na tlačítkách
     eraser_text = font.render("Guma", True, (0, 0, 0))
     clear_text = font.render("Vymazat vše", True, (0, 0, 0))
     save_text = font.render("Uložit", True, (0, 0, 0))
     custom_color_text = font.render("Vlastní", True, (0, 0, 0))
+    
+    tool_texts = [
+    ("Štětec", brush_tool_button),
+    ("Čára", line_tool_button),
+    ("Obdélník", rectangle_tool_button),
+    ("Trojúhelník", triangle_tool_button),
+    ("Kruh", circle_tool_button)]
+
+    for text, button in tool_texts:
+        tool_text = font.render(text, True, (0, 0, 0))
+        window.blit(tool_text, tool_text.get_rect(center=button.center))
     
     window.blit(eraser_text, eraser_text.get_rect(center=eraser_button.center))
     window.blit(clear_text, clear_text.get_rect(center=clear_button.center))
@@ -306,5 +392,9 @@ while True:
         brush_preview = pygame.Rect(0, 0, brush_size, brush_size)
         brush_preview.center = mouse_pos
         pygame.draw.ellipse(window, (0, 0, 0), brush_preview, width=2)
+    # Náhled tvarů
+    if drawing_shape and shape_start_pos and current_tool in [TOOL_LINE, TOOL_RECTANGLE, TOOL_TRIANGLE, TOOL_CIRCLE]:
+        preview_surface.fill((0, 0, 0, 0))
+    
     
     pygame.display.flip()
