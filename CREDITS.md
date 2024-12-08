@@ -1,7 +1,7 @@
 # Použitá díla třetích stran
 
 - OpenAI; ChatGPT; https://chatgpt.com
-- Anthropic; Claude; claude.ai
+- Anthropic; Claude; https://claude.ai
 - **Autor díla**; *Název díla*; https://odkaz.na/konkretni/stranku
 - ...
 
